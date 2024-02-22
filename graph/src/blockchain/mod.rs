@@ -411,6 +411,8 @@ pub enum BlockchainKind {
     Substreams,
 
     Starknet,
+
+    Aptos,
 }
 
 impl fmt::Display for BlockchainKind {
@@ -422,6 +424,7 @@ impl fmt::Display for BlockchainKind {
             BlockchainKind::Cosmos => "cosmos",
             BlockchainKind::Substreams => "substreams",
             BlockchainKind::Starknet => "starknet",
+            BlockchainKind::Aptos => "aptos",
         };
         write!(f, "{}", value)
     }
@@ -438,6 +441,7 @@ impl FromStr for BlockchainKind {
             "cosmos" => Ok(BlockchainKind::Cosmos),
             "substreams" => Ok(BlockchainKind::Substreams),
             "starknet" => Ok(BlockchainKind::Starknet),
+            "aptos" => Ok(BlockchainKind::Aptos),
             _ => Err(anyhow!("unknown blockchain kind {}", s)),
         }
     }

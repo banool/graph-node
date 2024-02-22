@@ -1,0 +1,32 @@
+[package]
+name = "graph-chain-aptos"
+version.workspace = true
+edition.workspace = true
+
+[build-dependencies]
+tonic-build = { workspace = true }
+
+[dependencies]
+# too many dep differences to use this
+# processor = { git = "https://github.com/aptos-labs/aptos-indexer-processors.git", rev = "d70b82a7bc86cd5016686a05ec7e4f36a203e143" }
+aptos-protos = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "b6be5ab14644f4ad65fe93ca911a30ef79fdad94" }
+base64 = "0.20"
+graph = { path = "../../graph" }
+prost = { workspace = true }
+prost-types = { workspace = true }
+serde = "1.0"
+tonic = { workspace = true }
+anyhow = "1"
+tracing = "0.1" # TODO use slog instead
+url = "2"
+tokio = { version = "1.35.1", features = ["rt", "macros", "process"] }
+kanal = { version = "0.1.0-pre8", features = ["async"] }
+#futures = "0.3"
+futures03 = { version = "0.3.1", package = "futures", features = ["compat"] }
+
+graph-runtime-wasm = { path = "../../runtime/wasm" }
+graph-runtime-derive = { path = "../../runtime/derive" }
+
+[dev-dependencies]
+diesel = { version = "1.4.7", features = ["postgres", "serde_json", "numeric", "r2d2"] }
+trigger-filters.path = "../../substreams/trigger-filters"

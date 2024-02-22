@@ -607,6 +607,24 @@ impl<S: Store> IndexNodeResolver<S> {
                 )
                 .await?
             }
+            // TODO: I think this is wrong, we likely want graph_chain_aptos::Chain.
+            BlockchainKind::Aptos => {
+                let unvalidated_subgraph_manifest =
+                    UnvalidatedSubgraphManifest::<graph_chain_substreams::Chain>::resolve(
+                        deployment_hash.clone(),
+                        raw_yaml,
+                        &self.link_resolver,
+                        &self.logger,
+                        max_spec_version,
+                    )
+                    .await?;
+
+                Self::validate_and_extract_features(
+                    &self.store.subgraph_store(),
+                    unvalidated_subgraph_manifest,
+                )
+                .await?
+            }
         };
 
         Ok(result)
@@ -705,6 +723,7 @@ impl<S: Store> IndexNodeResolver<S> {
         // gave you a compiler error, then this message is for you! You need to
         // add a new `try_resolve!` macro invocation above for your new chain
         // type.
+        // TODO: What is the point of this lol, doesn't this just do nothing?
         match BlockchainKind::Ethereum {
             // Note: we don't actually care about substreams here.
             BlockchainKind::Substreams
@@ -712,7 +731,8 @@ impl<S: Store> IndexNodeResolver<S> {
             | BlockchainKind::Ethereum
             | BlockchainKind::Cosmos
             | BlockchainKind::Near
-            | BlockchainKind::Starknet => (),
+            | BlockchainKind::Starknet
+            | BlockchainKind::Aptos => (),
         }
 
         // The given network does not exist.

@@ -133,6 +133,20 @@ impl<S: SubgraphStore> SubgraphInstanceManagerTrait for SubgraphInstanceManager<
 
                     self.start_subgraph_inner(logger, loc, runner).await
                 }
+                BlockchainKind::Aptos => {
+                    let runner = instance_manager
+                        .build_subgraph_runner::<graph_chain_aptos::Chain>(
+                            logger.clone(),
+                            self.env_vars.cheap_clone(),
+                            loc.clone(),
+                            manifest,
+                            stop_block,
+                            Box::new(SubgraphTriggerProcessor {}),
+                        )
+                        .await?;
+
+                    self.start_subgraph_inner(logger, loc, runner).await
+                }
             }
         };
 

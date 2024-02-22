@@ -197,7 +197,7 @@ where
     async fn process_trigger(
         &self,
         logger: &Logger,
-        _: Box<dyn Iterator<Item = &T::Host> + Send + '_>,
+        _: Box<dyn Iterator<Item = &T::Host> + Send + 'async_trait>,
         block: &Arc<Block>,
         _trigger: &data_source::TriggerData<Chain>,
         mut state: BlockState<Chain>,
